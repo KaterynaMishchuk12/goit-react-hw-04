@@ -1,6 +1,18 @@
 import { ImageCard } from "../ImageCard/ImageCard";
-
+import { useState } from "react";
+import { ImageModal } from "../ImageModal/ImageModal";
+///////// з модалкою щось поки не виходить
 export const ImageGallery = ({ items }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  console.log(isOpen);
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <ul>
@@ -10,6 +22,7 @@ export const ImageGallery = ({ items }) => {
           </li>
         ))}
       </ul>
+      <ImageModal onRequestClose={closeModal} />
     </>
   );
 };

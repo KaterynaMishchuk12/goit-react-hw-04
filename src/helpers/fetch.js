@@ -14,3 +14,4 @@ export async function fetchImage(page, query) {
     toast.error("Oops, something went wrong...");
   }
 }
+console.log(fetchImage(1, "dog"));

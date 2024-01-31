@@ -1,0 +1,7 @@
+.overlay {
+  .overlay {
+    inset: 0;
+    position: fixed;
+    background-color: rgb(15 15 15 / 75%);
+  }
+}
