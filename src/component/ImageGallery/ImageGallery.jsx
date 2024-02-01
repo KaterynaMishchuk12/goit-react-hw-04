@@ -4,12 +4,15 @@ import { ImageModal } from "../ImageModal/ImageModal";
 ///////// з модалкою щось поки не виходить
 export const ImageGallery = ({ items }) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(isOpen);
-  const openModal = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openModal = (item) => {
+    setSelectedImage(item);
     setIsOpen(true);
   };
 
   const closeModal = () => {
+    setSelectedImage(null);
     setIsOpen(false);
   };
 
@@ -18,11 +21,17 @@ export const ImageGallery = ({ items }) => {
       <ul>
         {items.map((item) => (
           <li key={item.id}>
-            <ImageCard item={item} onClick={openModal} />
+            <ImageCard item={item} onClick={() => openModal(item)} />
           </li>
         ))}
       </ul>
-      <ImageModal onRequestClose={closeModal} />
+      {selectedImage && (
+        <ImageModal
+          isOpen={isOpen}
+          image={selectedImage}
+          onRequestClose={closeModal}
+        />
+      )}
     </>
   );
 };

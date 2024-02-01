@@ -13,7 +13,7 @@ const customStyles = {
   },
 };
 
-export const ImageModal = ({ isOpen, onCloseModal, item }) => {
+export const ImageModal = ({ isOpen, image, onCloseModal }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -25,7 +25,7 @@ export const ImageModal = ({ isOpen, onCloseModal, item }) => {
       <button onClick={onCloseModal}>
         <IoClose />
       </button>
-      <img src={item.urls.full} alt={item.alt_description} />
+      <img src={image.urls.regular} alt={image.alt_description} />
     </Modal>
   );
 };
