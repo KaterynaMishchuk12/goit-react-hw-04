@@ -6,6 +6,7 @@ import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
 import { Loader } from "./Loader/Loader";
 import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
+// import { Toaster } from "react-hot-toast";
 
 export function App() {
   const [query, setQuery] = useState("");
@@ -13,6 +14,7 @@ export function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  // const [totalPages, setTotalPages] = useState(0);
 
   const searchImages = async (newQuery) => {
     setQuery(newQuery);
@@ -21,7 +23,7 @@ export function App() {
   };
 
   const loadMore = () => {
-    setPage(page + 1);
+    setPage((page) => page + 1);
   };
 
   useEffect(() => {
@@ -32,7 +34,10 @@ export function App() {
       try {
         setLoading(true);
         setError(false);
-        const fetchedData = await fetchImages(query);
+        const fetchedData = await fetchImages(query, page);
+        // setTotalPages(fetchedData.total_pages);
+
+        // if (page <= fetchedData.total_pages) {
         setImages((prevImages) => [...prevImages, ...fetchedData]);
       } catch (error) {
         setError(true);
@@ -49,7 +54,21 @@ export function App() {
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && <ImageGallery items={images} />}
-      <LoadMoreBtn onClick={loadMore} />
+      {images.length > 0 && !loading && <LoadMoreBtn onClick={loadMore} />}
+      {/* <Toaster /> */}
     </>
   );
 }
+
+// useEffect(() => {
+//   const numberOfLastPage = Math.ceil(fetchedData.results / perPage);
+//   if (page === numberOfLastPage) {
+//   }
+// });
+
+// const noImagesFound = (fetchedData) => {
+//   if (fetchedData.results.length === 0) {
+//     toast.notify("No images found according to your request");
+//   }
+// };
+// console.log(noImagesFound);

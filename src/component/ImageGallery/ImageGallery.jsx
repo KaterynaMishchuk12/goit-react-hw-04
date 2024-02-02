@@ -1,7 +1,7 @@
 import { ImageCard } from "../ImageCard/ImageCard";
 import { useState } from "react";
 import { ImageModal } from "../ImageModal/ImageModal";
-///////// з модалкою щось поки не виходить
+///////// зображення в модалці не всі гарно виглядають-завеликі
 export const ImageGallery = ({ items }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -29,7 +29,7 @@ export const ImageGallery = ({ items }) => {
         <ImageModal
           isOpen={isOpen}
           image={selectedImage}
-          onRequestClose={closeModal}
+          onCloseModal={closeModal}
         />
       )}
     </>

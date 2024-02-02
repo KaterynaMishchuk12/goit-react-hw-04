@@ -22,10 +22,16 @@ export const ImageModal = ({ isOpen, image, onCloseModal }) => {
       overlayClassName={css.overlay}
       style={customStyles}
     >
-      <button onClick={onCloseModal}>
+      <div className={css.content}>
+        <img
+          className={css.image}
+          src={image.urls.regular}
+          alt={image.alt_description}
+        />
+      </div>
+      <button className={css.button} onClick={onCloseModal}>
         <IoClose />
       </button>
-      <img src={image.urls.regular} alt={image.alt_description} />
     </Modal>
   );
 };
