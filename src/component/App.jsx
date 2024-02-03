@@ -6,6 +6,7 @@ import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
 import { Loader } from "./Loader/Loader";
 import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
+import toast, { Toaster } from "react-hot-toast";
 
 export function App() {
   const [query, setQuery] = useState("");
@@ -15,11 +16,19 @@ export function App() {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // для useRef
   // const totalPages = useRef(0);
+
+  const notify = () => toast("");
 
   const searchImages = async (newQuery) => {
     setQuery(newQuery);
 
+    if (newQuery === "") {
+      notify("Please, fill in the search field");
+      return;
+    }
+    // для useRef
     // totalPages.current = 1;
 
     setCurrentPage(1);
@@ -40,10 +49,14 @@ export function App() {
         setError(false);
         const fetchedData = await fetchImages(query, currentPage);
         setTotalPages(fetchedData.total_pages);
-        console.log(fetchedData.total_pages);
 
+        // для useRef
         // totalPages.current = fetchedData.total_pages;
 
+        if (fetchedData.results.length === 0) {
+          notify("No images found.Try another search request");
+          return;
+        }
         setImages((prevImages) => [...prevImages, ...fetchedData.results]);
       } catch (error) {
         setError(true);
@@ -64,7 +77,7 @@ export function App() {
       {error && <ErrorMessage />}
       {images.length > 0 && <ImageGallery items={images} />}
       {showLoadMoreBtn && <LoadMoreBtn onClick={loadMore} />}
-      {/* <Toaster /> */}
+      <Toaster />
     </>
   );
 }
