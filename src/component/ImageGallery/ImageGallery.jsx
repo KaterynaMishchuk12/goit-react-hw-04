@@ -1,7 +1,7 @@
 import { ImageCard } from "../ImageCard/ImageCard";
 import { useState } from "react";
 import { ImageModal } from "../ImageModal/ImageModal";
-///////// зображення в модалці не всі гарно виглядають-завеликі
+
 export const ImageGallery = ({ items }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);

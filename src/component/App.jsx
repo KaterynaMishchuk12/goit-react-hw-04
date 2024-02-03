@@ -1,29 +1,33 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { fetchImages } from "../helpers/fetch";
 import { SearchBar } from "./SearchBar/SearchBar";
 import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
 import { Loader } from "./Loader/Loader";
 import { LoadMoreBtn } from "./LoadMoreBtn/LoadMoreBtn";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
-// import { Toaster } from "react-hot-toast";
 
 export function App() {
   const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  // const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // const totalPages = useRef(0);
 
   const searchImages = async (newQuery) => {
     setQuery(newQuery);
-    setPage(1);
+
+    // totalPages.current = 1;
+
+    setCurrentPage(1);
     setImages([]);
   };
 
   const loadMore = () => {
-    setPage((page) => page + 1);
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {
@@ -34,11 +38,13 @@ export function App() {
       try {
         setLoading(true);
         setError(false);
-        const fetchedData = await fetchImages(query, page);
-        // setTotalPages(fetchedData.total_pages);
+        const fetchedData = await fetchImages(query, currentPage);
+        setTotalPages(fetchedData.total_pages);
+        console.log(fetchedData.total_pages);
 
-        // if (page <= fetchedData.total_pages) {
-        setImages((prevImages) => [...prevImages, ...fetchedData]);
+        // totalPages.current = fetchedData.total_pages;
+
+        setImages((prevImages) => [...prevImages, ...fetchedData.results]);
       } catch (error) {
         setError(true);
       } finally {
@@ -46,7 +52,10 @@ export function App() {
       }
     }
     fetchData();
-  }, [query, page]);
+  }, [query, currentPage]);
+
+  const showLoadMoreBtn =
+    images.length > 0 && !loading && currentPage < totalPages;
 
   return (
     <>
@@ -54,21 +63,8 @@ export function App() {
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && <ImageGallery items={images} />}
-      {images.length > 0 && !loading && <LoadMoreBtn onClick={loadMore} />}
+      {showLoadMoreBtn && <LoadMoreBtn onClick={loadMore} />}
       {/* <Toaster /> */}
     </>
   );
 }
-
-// useEffect(() => {
-//   const numberOfLastPage = Math.ceil(fetchedData.results / perPage);
-//   if (page === numberOfLastPage) {
-//   }
-// });
-
-// const noImagesFound = (fetchedData) => {
-//   if (fetchedData.results.length === 0) {
-//     toast.notify("No images found according to your request");
-//   }
-// };
-// console.log(noImagesFound);
