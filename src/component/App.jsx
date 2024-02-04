@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { fetchImages } from "../helpers/fetch";
 import { SearchBar } from "./SearchBar/SearchBar";
 import { ErrorMessage } from "./ErrorMessage/ErrorMessage";
@@ -12,24 +12,12 @@ export function App() {
   const [query, setQuery] = useState("");
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // для useRef
-  // const totalPages = useRef(0);
-
-  const notify = () => toast("");
-
   const searchImages = async (newQuery) => {
     setQuery(newQuery);
-
-    if (newQuery === "") {
-      notify("Please, fill in the search field");
-      return;
-    }
-    // для useRef
-    // totalPages.current = 1;
 
     setCurrentPage(1);
     setImages([]);
@@ -50,16 +38,14 @@ export function App() {
         const fetchedData = await fetchImages(query, currentPage);
         setTotalPages(fetchedData.total_pages);
 
-        // для useRef
-        // totalPages.current = fetchedData.total_pages;
-
         if (fetchedData.results.length === 0) {
-          notify("No images found.Try another search request");
+          toast.error("No matches found according to your request");
           return;
         }
+
         setImages((prevImages) => [...prevImages, ...fetchedData.results]);
       } catch (error) {
-        setError(true);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -73,6 +59,7 @@ export function App() {
   return (
     <>
       <SearchBar onSearch={searchImages} />
+
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && <ImageGallery items={images} />}

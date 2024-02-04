@@ -1,3 +1,5 @@
+import css from "./ImageCard.module.css";
+
 export const ImageCard = ({ item, onClick }) => {
   const handleClick = () => {
     onClick(item);
@@ -5,7 +7,11 @@ export const ImageCard = ({ item, onClick }) => {
 
   return (
     <div onClick={handleClick}>
-      <img src={item.urls.small} alt={item.alt_description} />
+      <img
+        className={css.image}
+        src={item.urls.small}
+        alt={item.alt_description}
+      />
     </div>
   );
 };

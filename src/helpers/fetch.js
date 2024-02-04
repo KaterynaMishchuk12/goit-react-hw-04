@@ -8,5 +8,3 @@ export const fetchImages = async (query, page) => {
   const response = await axios.get(url);
   return response.data;
 };
-
-// axios.defaults.headers.common["Authorization"] = `Client-ID ${API_KEY}`;

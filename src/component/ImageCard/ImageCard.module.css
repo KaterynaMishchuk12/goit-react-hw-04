@@ -1,0 +1,8 @@
+.image {
+  display: block;
+  max-width: 100%;
+  border: 1px solid black;
+  border-radius: 10px;
+
+  color: rgb(68, 68, 240);
+}
