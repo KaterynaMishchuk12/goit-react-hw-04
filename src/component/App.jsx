@@ -46,7 +46,6 @@ export function App() {
         setImages((prevImages) => [...prevImages, ...fetchedData.results]);
       } catch (error) {
         setError(error.message);
-        console.log(error.message);
       } finally {
         setLoading(false);
       }
@@ -60,7 +59,6 @@ export function App() {
   return (
     <>
       <SearchBar onSearch={searchImages} />
-
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {images.length > 0 && <ImageGallery items={images} />}
