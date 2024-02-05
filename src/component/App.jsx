@@ -46,6 +46,7 @@ export function App() {
         setImages((prevImages) => [...prevImages, ...fetchedData.results]);
       } catch (error) {
         setError(error.message);
+        console.log(error.message);
       } finally {
         setLoading(false);
       }
